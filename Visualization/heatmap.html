@@ -1,0 +1,72 @@
+<html>
+<head>
+    <!--API key: AIzaSyCS2_nkFXNLvO5EdD0gAcxzTO5h35Z__L0 -->
+    <!-- reference https://developers.google
+    .com/maps/documentation/javascript/examples/layer-heatmap -->
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Heatmap </title>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCS2_nkFXNLvO5EdD0gAcxzTO5h35Z__L0&libraries=visualization"></script>
+    <script src="smaller_yellow_data_pu.js"></script>
+    <script type="text/javascript">
+
+        function initialize() {
+            var centerlatlng = new google.maps.LatLng(40.747303, -73.950208);
+            var myOptions = {
+                zoom: 13,
+                center: centerlatlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+
+            map.data.loadGeoJson('zones.json');
+            map.data.setStyle({
+                "fillOpacity": 0.1,
+                "strokeColor": 'black',
+                "strokeOpacity": 0.7,
+                "strokeWeight": 3
+            });
+            //map.data.setStyle({visible: false});
+
+            var mapLabel = new MapLabel({
+                text: 'Test!!',
+                position: new google.maps.LatLng(40.747303, -73.950208),
+                map: map,
+                fontSize: 20
+            });
+
+            var heatmap;
+            heatmap = new google.maps.visualization.HeatmapLayer({
+                // data: getPoints()
+            });
+            heatmap.setMap(map);
+            heatmap.set('threshold', 50);
+            heatmap.set('radius', 100);
+            heatmap.set('opacity', 0);
+            heatmap.set('dissipating', true);
+
+            var gradient = [
+
+
+          'rgba(0, 127, 255, 0)',
+          'rgba(0, 63, 255, 1)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(0, 0, 223, 1)',
+          'rgba(0, 0, 191, 1)',
+          'rgba(0, 0, 159, 1)',
+          'rgba(0, 0, 127, 1)',
+          'rgba(63, 0, 91, 1)',
+          'rgba(127, 0, 63, 1)',
+          'rgba(191, 0, 31, 1)',
+          'rgba(255, 0, 0, 1)'];
+
+            heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+
+        }
+    </script>
+</head>
+<body style='margin:0px; padding:0px;' onload="initialize()">
+	<div id="map_canvas" style="width: 100%; height: 100%;"></div>
+</body>
+</html>
